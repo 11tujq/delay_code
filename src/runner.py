@@ -26,7 +26,7 @@ import pyrootutils
 pyrootutils.setup_root(__file__, dotenv=True, pythonpath=True)
 import utils
 from src.tianshou.policy import DDPGPolicy
-
+from DBDE_diffusion import DBDEDiffusion
 # Setup and configurations
 warnings.filterwarnings('ignore')
 
@@ -1866,6 +1866,7 @@ class TD3SACRunner(OfflineRLRunner):
 			pass
 
 	def init_components(self):
+		
 		self.log("Init networks ...")
 		env = self.env
 		cfg = self.cfg
@@ -1900,17 +1901,27 @@ class TD3SACRunner(OfflineRLRunner):
 		self.critic1_old = deepcopy(self.critic1)
 		self.critic2_old = deepcopy(self.critic2)
 
+		# diffusion model flag (used in q_sac)
+		self.diffusion_model = (self.ALGORITHM == "q_sac")
+
 		self.actor_old.eval()
 		self.critic1.train()
 		self.critic2.train()
 		self.critic1_old.train()
 		self.critic2_old.train()
 		
+		redudent_net = []
 		if self.ALGORITHM == "td3":
 			redudent_net = []
 			self.exploration_noise = cfg.policy.initial_exploration_noise
 			# TODO remove dedudent net
 		if self.ALGORITHM == "sac":
+			redudent_net = ["actor_old"]
+			self.critic1_old.eval()
+			self.critic2_old.eval()
+			self.log("init sac alpha ...")
+			self._init_sac_alpha()
+		if self.ALGORITHM == "q_sac":
 			redudent_net = ["actor_old"]
 			self.critic1_old.eval()
 			self.critic2_old.eval()
@@ -1945,7 +1956,17 @@ class TD3SACRunner(OfflineRLRunner):
 				self.kl_weight_log = torch.tensor([np.log(
 					self.global_cfg.actor_input.obs_pred.norm_kl_loss_weight
 				)], device=self.actor.device)
-		
+		if self.ALGORITHM == "q_sac":
+			state_dim=self.env.observation_space.shape[0]
+			cond_dim=self.env.observation_space.shape[0] + self.env.action_space.shape[0] * self.global_cfg.history_num
+			self.dbde = DBDEDiffusion(
+					state_dim=state_dim,
+					cond_dim=cond_dim,
+					num_steps=self.global_cfg.actor_input.obs_pred.num_steps,
+					hidden_dim=self.global_cfg.actor_input.obs_pred.feat_dim,
+					device=self.cfg.device,
+				)
+			self.dbde_optimizer = torch.optim.Adam(self.dbde.parameters(), lr=1e-3)
 		if self.global_cfg.actor_input.obs_encode.turn_on:
 			self.encode_net = self.global_cfg.actor_input.obs_encode.net(
 				state_shape=self.env.observation_space.shape,
@@ -2120,6 +2141,20 @@ class TD3SACRunner(OfflineRLRunner):
 				res = a_out[0]
 				res = torch.tanh(res) * torch.tensor(self.env.action_space.high, device=self.cfg.device) + 0.0 # TODO bias
 			else: raise ValueError("unknown mode: {}".format(mode))
+		elif self.ALGORITHM == "q_sac":
+			if mode == "train":
+				assert isinstance(a_out, tuple) # (mean, logvar)
+				dist = Independent(Normal(*a_out), 1)
+				act = dist.rsample()
+				squashed_action = torch.tanh(act) * torch.tensor(self.env.action_space.high, device=self.cfg.device) + 0.0 # TODO bias
+				# log_prob = dist.log_prob(act).unsqueeze(-1)
+				# log_prob = log_prob - torch.log((1 - squashed_action.pow(2)) +
+				# 								np.finfo(np.float32).eps.item()).sum(-1, keepdim=True) # TODO remove, seems not used 
+				res = squashed_action
+			elif mode == "eval":
+				res = a_out[0]
+				res = torch.tanh(res) * torch.tensor(self.env.action_space.high, device=self.cfg.device) + 0.0 # TODO bias
+			else: raise ValueError("unknown mode: {}".format(mode))
 		elif self.ALGORITHM == "ddpg":
 			if mode == "train":
 				a_out = a_out[0]
@@ -2182,6 +2217,14 @@ class TD3SACRunner(OfflineRLRunner):
 			self.update_actor(batch)
 			self._soft_update(self.critic1_old, self.critic1, self.cfg.policy.tau)
 			self._soft_update(self.actor_old, self.actor, self.cfg.policy.tau)
+		elif self.ALGORITHM == "q_sac":
+			
+			if getattr(self, "diffusion_model", False):
+				self.update_dbde(batch)
+			self.update_critic(batch)
+			self.update_actor(batch)
+			self._soft_update(self.critic1_old, self.critic1, self.cfg.policy.tau)
+			self._soft_update(self.critic2_old, self.critic2, self.cfg.policy.tau)
 		else:
 			raise NotImplementedError
 			
@@ -2873,7 +2916,7 @@ class TD3Runner(TD3SACRunner):
 			act_online_next = a_next_online_old
 			
 		return act_online_cur, act_online_next, {}
-	
+
 class SACRunner(TD3SACRunner):
 	ALGORITHM = "sac"
 
@@ -2948,7 +2991,7 @@ class SACRunner(TD3SACRunner):
 		res_info = {}
 		combined_loss = 0.
 		
-		### actor loss
+		### actor loss，
 		if self.cfg.global_cfg.critic_input.history_merge_method == "stack_rnn":
 			if self.cfg.global_cfg.critic_input.bi_or_si_rnn == "both":
 				current_q1a = forward_with_preinput(batch.c_in_online_cur, batch.preinput, self.critic_sirnn_1, "cur")
@@ -2956,7 +2999,7 @@ class SACRunner(TD3SACRunner):
 			else:
 				current_q1a = forward_with_preinput(batch.c_in_online_cur, batch.preinput, self.critic1, "cur")
 				current_q2a = forward_with_preinput(batch.c_in_online_cur, batch.preinput, self.critic2, "cur")
-		else:
+		else:#c_in_online_cur是obs—t+a-online-sample
 			current_q1a, _ = self.critic1(batch.c_in_online_cur, None)
 			current_q2a, _ = self.critic2(batch.c_in_online_cur, None)
 		actor_loss = self._log_alpha.exp().detach() * batch.logprob_online_cur - torch.min(current_q1a, current_q2a)
@@ -3158,3 +3201,232 @@ class DDPGRunner(TD3SACRunner):
 			)[0][0]
 		return act_online_cur, act_online_next, {}
 
+class Q_SACRunner(TD3SACRunner):
+	ALGORITHM = "q_sac"
+	
+	def _build_dbde_cond(self, batch):
+		"""Construct DBDE condition as delayed obs + history actions before any pred/encode override."""
+		cond = batch.dobs
+		if self.global_cfg.history_num > 0:
+			if self.cfg.global_cfg.actor_input.history_merge_method == "stack_rnn":
+				his_act = batch.ahis_cur[...,-1,:]
+			else: # cat_mlp/none
+				his_act = batch.ahis_cur.flatten(start_dim=-2)
+			cond = torch.cat([cond, his_act], dim=-1)
+		return cond
+
+	def update_dbde(self,batch):
+		self.dbde_optimizer.zero_grad()
+		dbde_cond = self._build_dbde_cond(batch)
+		dbde_loss_dict = self.dbde.training_loss(batch.oobs, dbde_cond) 
+		dbde_loss = dbde_loss_dict["loss"]
+		dbde_loss.backward()
+		self.dbde_optimizer.step()
+	def update_critic(self, batch):
+		# cal target_q
+		pre_sz = list(batch.done.shape)
+		
+		if self.cfg.global_cfg.debug.use_terminated_mask_for_value:
+			value_mask = batch.terminated
+		else:
+			value_mask = batch.done
+		
+		# target
+		with torch.no_grad():
+			if self.cfg.global_cfg.critic_input.history_merge_method == "stack_rnn":
+				v_next_1 = forward_with_preinput(batch.c_in_online_next, batch.preinput, self.critic1_old, "next")
+				v_next_2 = forward_with_preinput(batch.c_in_online_next, batch.preinput, self.critic2_old, "next")
+			else:
+				v_next_1 = self.critic1_old(batch.c_in_online_next, None)[0]
+				v_next_2 = self.critic2_old(batch.c_in_online_next, None)[0]
+			v_next = torch.min(
+				v_next_1, v_next_2
+			).reshape(*pre_sz) - self._log_alpha.exp().detach() * batch.logprob_online_next.reshape(*pre_sz)
+			target_q = batch.rew + self.cfg.policy.gamma * (1 - value_mask.int()) * v_next
+		
+		# cur
+		if self.cfg.global_cfg.critic_input.history_merge_method == "stack_rnn":
+			v_cur_1 = forward_with_preinput(batch.c_in_cur, batch.preinput, self.critic1, "cur")
+			v_cur_2 = forward_with_preinput(batch.c_in_cur, batch.preinput, self.critic2, "cur")
+		else:
+			v_cur_1 = self.critic1(batch.c_in_cur, None)[0]
+			v_cur_2 = self.critic2(batch.c_in_cur, None)[0]
+		critic_loss = F.mse_loss(v_cur_1.reshape(*pre_sz), target_q, reduce=False) + \
+			F.mse_loss(v_cur_2.reshape(*pre_sz), target_q, reduce=False)
+
+		# add sirnn extra loss
+		if self.cfg.global_cfg.critic_input.history_merge_method == "stack_rnn" \
+			and self.cfg.global_cfg.critic_input.bi_or_si_rnn == "both":
+			v_cur_sirnn_1 = forward_with_preinput(batch.c_in_cur, batch.preinput, self.critic_sirnn_1, "cur")
+			v_cur_sirnn_2 = forward_with_preinput(batch.c_in_cur, batch.preinput, self.critic_sirnn_2, "cur")
+			sirnn_loss = F.mse_loss(v_cur_sirnn_1.reshape(*pre_sz), target_q, reduce=False) + \
+				F.mse_loss(v_cur_sirnn_2.reshape(*pre_sz), target_q, reduce=False)
+			critic_loss += sirnn_loss
+			self.record("learn/loss_critic_before_sirnn", critic_loss.detach().mean().item())
+			self.record("learn/loss_critic_sirnn", sirnn_loss.detach().mean().item())
+
+		# use mask
+		critic_loss = apply_mask(critic_loss, batch.valid_mask).mean()
+		self.record("learn/loss_critic", critic_loss.item())
+		self.record("learn/loss_critic_normed", critic_loss.item()/batch.valid_mask.float().mean().item())
+		self.record("learn/valid_mask_ratio", batch.valid_mask.float().mean())
+
+		self.critic1_optim.zero_grad()
+		self.critic2_optim.zero_grad()
+		if self.cfg.global_cfg.critic_input.history_merge_method == "stack_rnn" \
+			and self.cfg.global_cfg.critic_input.bi_or_si_rnn == "both":
+			self.critic_sirnn_1_optim.zero_grad()
+			self.critic_sirnn_2_optim.zero_grad()
+		critic_loss.backward()
+		self.critic1_optim.step()
+		self.critic2_optim.step()
+		if self.cfg.global_cfg.critic_input.history_merge_method == "stack_rnn" \
+			and self.cfg.global_cfg.critic_input.bi_or_si_rnn == "both":
+			self.critic_sirnn_1_optim.step()
+			self.critic_sirnn_2_optim.step()
+
+		return {
+			"critic_loss": critic_loss.cpu().item()
+		}
+
+	def update_actor(self, batch):
+		res_info = {}
+		combined_loss = 0.
+		# TODO:batch.q_uncertainty_weight,need to be finished from diffusion model
+		### actor loss，
+		# TODO：加入q_un的计算
+		q_uncertainty_weight = 1.0
+		if self.diffusion_model:
+			num_dbde_samples = 10
+			dbde_cond = self._build_dbde_cond(batch)
+			dbde_output = self.dbde.sample(dbde_cond, num_dbde_samples)  # [B*num_dbde_samples, obs_dim]
+			if self.cfg.global_cfg.critic_input.history_merge_method != "stack_rnn":
+				obs_dim = self.env.observation_space.shape[0]
+				# 复制 critic 输入，再用 DBDE 生成的 obs 替换 obs 部分，保持动作/历史不变
+				c_in_expanded = batch.c_in_online_cur.repeat_interleave(num_dbde_samples, dim=0).clone()
+				c_in_expanded[..., :obs_dim] = dbde_output
+				q_dbde, _ = self.critic1(c_in_expanded, None)  # [B*num_dbde_samples, 1]
+				q_dbde = q_dbde.view(batch.c_in_online_cur.shape[0], num_dbde_samples, -1)
+				q_var = q_dbde.var(dim=1, unbiased=False).mean(dim=1, keepdim=True)  # [B,1]
+				q_uncertainty_weight = 1.0 / (1.0 + q_var)  # 方差越大，权重越小
+				q_uncertainty_weight = q_uncertainty_weight.detach()
+			else:
+				# RNN critic 情况下暂时无法对 preinput 做替换，先用常数权重
+				q_uncertainty_weight = 1.0
+		if self.cfg.global_cfg.critic_input.history_merge_method == "stack_rnn":
+			if self.cfg.global_cfg.critic_input.bi_or_si_rnn == "both":
+				current_q1a = forward_with_preinput(batch.c_in_online_cur, batch.preinput, self.critic_sirnn_1, "cur")
+				current_q2a = forward_with_preinput(batch.c_in_online_cur, batch.preinput, self.critic_sirnn_2, "cur")
+			else:
+				current_q1a = forward_with_preinput(batch.c_in_online_cur, batch.preinput, self.critic1, "cur")
+				current_q2a = forward_with_preinput(batch.c_in_online_cur, batch.preinput, self.critic2, "cur")
+		else:#c_in_online_cur是obs—t+a-online-sample
+			current_q1a, _ = self.critic1(batch.c_in_online_cur, None)
+			current_q2a, _ = self.critic2(batch.c_in_online_cur, None)
+		actor_loss = q_uncertainty_weight * (self._log_alpha.exp().detach() * batch.logprob_online_cur - torch.min(current_q1a, current_q2a))
+		actor_loss = apply_mask(actor_loss, batch.valid_mask).mean()
+		combined_loss += actor_loss
+		#把actorloss记录下来
+		self.record("learn/loss_actor", actor_loss.item())
+		self.record("learn/loss_actor_normed", actor_loss.item()/batch.valid_mask.float().mean().item())
+
+		# add obs_pred loss，预测
+		if self.global_cfg.actor_input.obs_pred.turn_on:
+			combined_loss = self.add_obs_pred_loss(batch, combined_loss)
+		
+		# add obs_encode loss，编码
+		if self.global_cfg.actor_input.obs_encode.turn_on:
+			combined_loss = self.add_obs_encode_loss(batch, combined_loss)
+
+		# backward and optim，用combined loss对actor和预测模块进行方向传播，我们应该是使用actor_input.obs_encode.turn_on:，仅编码不做预测
+		self.actor_optim.zero_grad()
+		if self.global_cfg.actor_input.obs_pred.turn_on: self._pred_optim.zero_grad()
+		if self.global_cfg.actor_input.obs_encode.turn_on: self._encode_optim.zero_grad()
+		combined_loss.backward()
+		if self.global_cfg.actor_input.obs_pred.turn_on: self._pred_optim.step()
+		if self.global_cfg.actor_input.obs_encode.turn_on: self._encode_optim.step()
+		self.actor_optim.step()
+
+		# update alpha (use batch.logprob_online_cur)
+		# 更新alpha的，不需要进行修改
+		if self._is_auto_alpha:
+			if self.global_cfg.debug.use_log_alpha_for_mul_logprob:
+				alpha_mul = self._log_alpha
+			else:
+				alpha_mul = self._log_alpha.exp()
+			
+			if self.global_cfg.debug.entropy_mask_loss_renorm:
+				cur_entropy = - apply_mask(batch.logprob_online_cur.detach(), batch.valid_mask).mean() / batch.valid_mask.mean() # (*, 1)
+				alpha_loss = - alpha_mul * (self._target_entropy - cur_entropy)
+			else:
+				cur_entropy = - batch.logprob_online_cur.detach() # (*, 1)
+				alpha_loss = - alpha_mul * apply_mask(self._target_entropy-cur_entropy, batch.valid_mask) # (*, 1)
+				alpha_loss = alpha_loss.mean()
+			
+			self._alpha_optim.zero_grad()
+			alpha_loss.backward()
+			self._alpha_optim.step()
+			self.record("learn/alpha_loss_normed", alpha_loss.item() / batch.valid_mask.float().mean().item())
+			self.record("learn/alpha", self._log_alpha.exp().detach().cpu().item())
+			self.record("learn/log_alpha", self._log_alpha.detach().cpu().item())
+			self.record("learn/entropy", cur_entropy.mean().cpu().item())
+			self.record("learn/entropy_target", self._target_entropy)
+		
+		return {
+			"actor_loss": actor_loss.cpu().item()
+		}
+
+	def get_act_online(self, batch):
+		# actor_input.history_merge_method == “cat_mlp”，a_in_cur是merged obs+actions，actor输出是均值和方差（高斯输出
+		(mu, var), _ = self.actor(batch.a_in_cur, None)
+		act_online_cur, logprob_online_cur = self.actor.sample_act(mu, var)
+		#act的选择以及对应的对数概率
+		# next
+		with torch.no_grad():
+			#下一个状态的onlie——action不需要传播梯度
+			(mu, var), _ = self.actor(batch.a_in_next, state=None)
+			act_online_next, logprob_online_next = self.actor.sample_act(mu, var)
+		return act_online_cur, act_online_next, {
+			"logprob_online_cur": logprob_online_cur,
+			"logprob_online_next": logprob_online_next
+		}
+	#更新critic的简单mse优化器，不需要修改
+	def _mse_optimizer(self,
+			batch: Batch, critic: torch.nn.Module, optimizer: torch.optim.Optimizer
+		) -> Tuple[torch.Tensor, torch.Tensor]:
+		"""A simple wrapper script for updating critic network."""
+		weight = getattr(batch, "weight", 1.0)
+		current_q, critic_state = critic(batch.critic_input_cur_offline)
+		target_q = torch.tensor(batch.returns).to(current_q.device)
+		td = current_q.flatten() - target_q.flatten()
+		critic_loss = (
+			(td.pow(2) * weight) * batch.valid_mask.flatten()
+		).mean()
+		critic_loss = (td.pow(2) * weight)
+		critic_loss = critic_loss.mean()
+		optimizer.zero_grad()
+		critic_loss.backward()
+		optimizer.step()
+		return td, critic_loss
+	
+	def _init_sac_alpha(self):
+		"""
+		init self._log_alpha, self._alpha_optim, self._is_auto_alpha, self._target_entropy
+		"""
+		cfg = self.cfg
+		if isinstance(cfg.policy.alpha, Iterable):
+			self._is_auto_alpha = True
+			self._target_entropy, self._log_alpha, self._alpha_optim = cfg.policy.alpha
+			if type(self._target_entropy) == str and self._target_entropy == "neg_act_num":
+				self._target_entropy = - np.prod(self.env.action_space.shape)
+			elif type(self._target_entropy) == float:
+				self._target_entropy = torch.tensor(self._target_entropy).to(self.device)
+			else: 
+				raise ValueError("Invalid target entropy type.")
+			assert cfg.policy.alpha[1].shape == torch.Size([1]) and cfg.policy.alpha[1].requires_grad
+			self._alpha_optim = self._alpha_optim([self._log_alpha])
+		elif isinstance(cfg.policy.alpha, float):
+			self._is_auto_alpha = False
+			self._log_alpha = cfg.policy.alpha # here, the cfg alpha is actually log_alpha
+		else: 
+			raise ValueError("Invalid alpha type.")

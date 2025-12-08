@@ -170,5 +170,5 @@ start_timesteps: ???
 
 # common - for all tasks (task_name, tags, output_dir, device)
 algorithm_name: ???
-task_name: "RL_Apr2"
+task_name: "Q_SACexp"
 tags: ["debug"]
