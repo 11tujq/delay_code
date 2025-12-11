@@ -30,6 +30,7 @@ global_cfg: # would be passed to actor, critic1, critic2, policy, env
     obs_pred:
       turn_on: false 
       feat_dim: 256
+      num_steps: 50 # diffusion steps used by DBDE
       middle_detach: true 
       input_type: "feat" # obs or feat
       net_type: mlp # vae or mlp

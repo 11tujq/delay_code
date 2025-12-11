@@ -24,26 +24,23 @@ RUN curl --noproxy "*" -s --connect-timeout 10 www.google.com > /dev/null; \
     fi
 
 ### apt
-RUN apt-get update && apt-get install -y \
-    curl \
-    git \
-    sudo \
-    wget \
-    ffmpeg \
-    libsm6 \
-    libxext6 \
-    htop \
-    vim \
-    libosmesa6-dev \
-    libgl1-mesa-dev \
-    gcc \
-    g++ \
-    build-essential \
-    wget \
-    libgmp-dev \
-    libmpfr-dev \
-    libmpc-dev \
-    cmake
+RUN pip install -i https://pypi.tuna.tsinghua.edu.cn/simple \
+    hydra-core \
+    hydra-colorlog \
+    hydra-optuna-sweeper \
+    torchmetrics \
+    pyrootutils \
+    pre-commit \
+    pytest \
+    sh \
+    omegaconf \
+    rich \
+    pytorch-lightning==1.7.7 \
+    jupyter \
+    wandb \
+    tensorboardx \
+    ipdb
+
     # && rm -rf /var/lib/apt/lists/*
 
 # ### conda

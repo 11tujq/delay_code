@@ -42,15 +42,10 @@ Here's an example setup:
 
 ```bash
 # Example directory paths
-export UDATADIR=~/Desktop/delay/data # directory for dataset
-export UPRJDIR=~/Desktop/delay/code # directory for code
-export UOUTDIR=~/Desktop/delay/output # directory for outputs such as logs
-
-# Example API Key and Worker settings
-
+export UDATADIR=~/delay_bytedance/data # directory for dataset
+export UPRJDIR=~/delay_bytedance/code # directory for code
+export UOUTDIR=~/delay_bytedance/output # directory for outputs such as logs
 export NUM_WORKERS=0 # number of workers to use
-
-# Create directories if they do not exist
 mkdir -p $UDATADIR $UPRJDIR $UOUTDIR
 ```
 
@@ -63,18 +58,6 @@ We provide three methods to set up the Python environment for this project:
 - Using the Development Environment in VS Code (Most Recommended)
 - Using Docker (Recommended)
 - Using Pip or Conda
-
-### **Using the Development Environment in VS Code (Most Recommended)**
-
-If you're a Visual Studio Code (VS Code) user, we highly recommend this method for its simplicity. You can set up all the environment requirements for this project in just one step.
-
-1. Open this project in VS Code.
-2. Install the "Dev Containers" extension.
-3. Press `Cmd/Ctrl+Shift+P` to open the command palette, then select `Dev Container: Rebuild and Reopen in Container`.
-
-Note: The configuration for Dev Containers is stored in the `.devcontainer` folder, which is included in our project. You can modify this if you need to add or remove certain libraries.
-
-Further details and instructions about Dev Containers in VS Code can be found **[here](https://code.visualstudio.com/docs/devcontainers/containers)**.
 
 ### **Using Docker**
 
@@ -100,7 +83,7 @@ pip install \
     sh \
     omegaconf \
     rich \
-    pytorch-lightning==1.7.7 \
+
     jupyter \
     wandb \
     tensorboardx \
@@ -114,6 +97,7 @@ pip install \
     ftfy \
     regex \
     imageio
+pytorch-lightning==1.7.7 
 ```
 
 ps. We use `pytorch/pytorch:1.11.0-cuda11.3-cudnn8-runtime` while other versions should also work.

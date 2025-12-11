@@ -1,0 +1,78 @@
+[2025-12-11 15:54:19,761][utils][WARNING] - Field 'net' not found in config. Skipping 'net' config printing...
+[2025-12-11 15:54:19,762][utils][WARNING] - Field 'optimizer' not found in config. Skipping 'optimizer' config printing...
+[2025-12-11 15:54:19,762][utils][WARNING] - Field 'train_collector' not found in config. Skipping 'train_collector' config printing...
+[2025-12-11 15:54:19,762][utils][WARNING] - Field 'test_collector' not found in config. Skipping 'test_collector' config printing...
+[2025-12-11 15:59:37,945][utils][WARNING] - Field 'net' not found in config. Skipping 'net' config printing...
+[2025-12-11 15:59:37,946][utils][WARNING] - Field 'optimizer' not found in config. Skipping 'optimizer' config printing...
+[2025-12-11 15:59:37,946][utils][WARNING] - Field 'train_collector' not found in config. Skipping 'train_collector' config printing...
+[2025-12-11 15:59:37,946][utils][WARNING] - Field 'test_collector' not found in config. Skipping 'test_collector' config printing...
+[2025-12-11 16:08:16,084][asyncio][WARNING] - socket.send() raised exception.
+[2025-12-11 16:08:16,084][asyncio][WARNING] - socket.send() raised exception.
+[2025-12-11 16:08:16,186][asyncio][WARNING] - socket.send() raised exception.
+[2025-12-11 16:08:16,190][asyncio][WARNING] - socket.send() raised exception.
+[2025-12-11 16:08:16,193][asyncio][WARNING] - socket.send() raised exception.
+[2025-12-11 16:08:16,194][asyncio][WARNING] - socket.send() raised exception.
+[2025-12-11 16:08:16,194][asyncio][WARNING] - socket.send() raised exception.
+[2025-12-11 16:08:16,198][asyncio][WARNING] - socket.send() raised exception.
+[2025-12-11 16:08:16,202][asyncio][WARNING] - socket.send() raised exception.
+[2025-12-11 16:08:16,204][asyncio][WARNING] - socket.send() raised exception.
+[2025-12-11 16:08:16,204][asyncio][WARNING] - socket.send() raised exception.
+[2025-12-11 16:08:16,205][asyncio][WARNING] - socket.send() raised exception.
+[2025-12-11 16:08:16,209][asyncio][WARNING] - socket.send() raised exception.
+[2025-12-11 16:08:16,211][asyncio][WARNING] - socket.send() raised exception.
+[2025-12-11 16:08:16,219][asyncio][WARNING] - socket.send() raised exception.
+[2025-12-11 16:08:16,221][asyncio][WARNING] - socket.send() raised exception.
+[2025-12-11 16:08:16,221][asyncio][WARNING] - socket.send() raised exception.
+[2025-12-11 16:08:16,221][asyncio][WARNING] - socket.send() raised exception.
+[2025-12-11 16:08:16,226][asyncio][WARNING] - socket.send() raised exception.
+[2025-12-11 16:08:16,227][asyncio][WARNING] - socket.send() raised exception.
+[2025-12-11 16:08:16,227][asyncio][WARNING] - socket.send() raised exception.
+[2025-12-11 16:08:16,227][asyncio][WARNING] - socket.send() raised exception.
+[2025-12-11 16:08:16,227][asyncio][WARNING] - socket.send() raised exception.
+[2025-12-11 16:08:16,228][asyncio][WARNING] - socket.send() raised exception.
+[2025-12-11 16:08:16,228][asyncio][WARNING] - socket.send() raised exception.
+[2025-12-11 16:08:16,229][asyncio][WARNING] - socket.send() raised exception.
+[2025-12-11 16:08:16,229][asyncio][WARNING] - socket.send() raised exception.
+[2025-12-11 16:08:16,229][asyncio][WARNING] - socket.send() raised exception.
+[2025-12-11 16:08:16,230][asyncio][WARNING] - socket.send() raised exception.
+[2025-12-11 16:08:16,230][asyncio][WARNING] - socket.send() raised exception.
+[2025-12-11 16:08:16,230][asyncio][WARNING] - socket.send() raised exception.
+[2025-12-11 16:08:16,231][asyncio][WARNING] - socket.send() raised exception.
+[2025-12-11 16:08:16,233][asyncio][WARNING] - socket.send() raised exception.
+[2025-12-11 16:08:16,233][asyncio][WARNING] - socket.send() raised exception.
+[2025-12-11 16:08:16,233][asyncio][WARNING] - socket.send() raised exception.
+[2025-12-11 16:08:16,233][asyncio][WARNING] - socket.send() raised exception.
+[2025-12-11 16:08:20,286][asyncio][WARNING] - socket.send() raised exception.
+[2025-12-11 16:08:20,287][asyncio][WARNING] - socket.send() raised exception.
+[2025-12-11 16:08:20,316][asyncio][WARNING] - socket.send() raised exception.
+[2025-12-11 16:08:20,319][asyncio][WARNING] - socket.send() raised exception.
+[2025-12-11 16:08:20,322][asyncio][WARNING] - socket.send() raised exception.
+[2025-12-11 16:08:20,324][asyncio][WARNING] - socket.send() raised exception.
+[2025-12-11 16:08:20,325][asyncio][WARNING] - socket.send() raised exception.
+[2025-12-11 16:08:20,326][asyncio][WARNING] - socket.send() raised exception.
+[2025-12-11 16:08:20,333][asyncio][WARNING] - socket.send() raised exception.
+[2025-12-11 16:08:20,335][asyncio][WARNING] - socket.send() raised exception.
+[2025-12-11 16:08:20,337][asyncio][WARNING] - socket.send() raised exception.
+[2025-12-11 16:08:20,340][asyncio][WARNING] - socket.send() raised exception.
+[2025-12-11 16:08:20,342][asyncio][WARNING] - socket.send() raised exception.
+[2025-12-11 16:08:20,343][asyncio][WARNING] - socket.send() raised exception.
+[2025-12-11 16:08:20,350][asyncio][WARNING] - socket.send() raised exception.
+[2025-12-11 16:08:20,352][asyncio][WARNING] - socket.send() raised exception.
+[2025-12-11 16:08:20,353][asyncio][WARNING] - socket.send() raised exception.
+[2025-12-11 16:08:20,353][asyncio][WARNING] - socket.send() raised exception.
+[2025-12-11 16:08:20,353][asyncio][WARNING] - socket.send() raised exception.
+[2025-12-11 16:08:20,354][asyncio][WARNING] - socket.send() raised exception.
+[2025-12-11 16:08:20,354][asyncio][WARNING] - socket.send() raised exception.
+[2025-12-11 16:08:20,354][asyncio][WARNING] - socket.send() raised exception.
+[2025-12-11 16:08:20,354][asyncio][WARNING] - socket.send() raised exception.
+[2025-12-11 16:08:20,354][asyncio][WARNING] - socket.send() raised exception.
+[2025-12-11 16:08:20,355][asyncio][WARNING] - socket.send() raised exception.
+[2025-12-11 16:08:20,355][asyncio][WARNING] - socket.send() raised exception.
+[2025-12-11 16:08:20,355][asyncio][WARNING] - socket.send() raised exception.
+[2025-12-11 16:08:20,356][asyncio][WARNING] - socket.send() raised exception.
+[2025-12-11 16:08:20,358][asyncio][WARNING] - socket.send() raised exception.
+[2025-12-11 16:08:20,358][asyncio][WARNING] - socket.send() raised exception.
+[2025-12-11 16:08:20,359][asyncio][WARNING] - socket.send() raised exception.
+[2025-12-11 16:08:20,361][asyncio][WARNING] - socket.send() raised exception.
+[2025-12-11 16:08:20,361][asyncio][WARNING] - socket.send() raised exception.
+[2025-12-11 16:08:20,362][asyncio][WARNING] - socket.send() raised exception.

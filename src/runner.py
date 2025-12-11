@@ -2286,6 +2286,9 @@ class TD3SACRunner(OfflineRLRunner):
 			ps. the key with "online" is with gradient
 		"""
 		keeped_keys = ["a_in_cur", "a_in_next", "c_in_cur", "c_in_online_cur", "c_in_online_next", "logprob_online_cur", "logprob_online_next", "done", "rew", "act", "valid_mask", "terminated"]
+		# DBDE diffusion (q_sac) needs delayed obs and history actions for the condition input
+		if getattr(self, "diffusion_model", False):
+			keeped_keys += ["dobs", "ahis_cur", "oobs"]
 		batch.to_torch(device=self.cfg.device, dtype=torch.float32)
 		if self._burnin_num(): burnin_batch.to_torch(device=self.cfg.device, dtype=torch.float32)
 		pre_sz = list(batch["done"].shape)
@@ -3218,7 +3221,14 @@ class Q_SACRunner(TD3SACRunner):
 	def update_dbde(self,batch):
 		self.dbde_optimizer.zero_grad()
 		dbde_cond = self._build_dbde_cond(batch)
-		dbde_loss_dict = self.dbde.training_loss(batch.oobs, dbde_cond) 
+		# flatten time dimension so diffusion operates on 2D [B*T, dim]
+		s0 = batch.oobs
+		cond = dbde_cond
+		if s0.dim() > 2:
+			bt = s0.shape[0] * s0.shape[1]
+			s0 = s0.reshape(bt, -1)
+			cond = cond.reshape(bt, -1)
+		dbde_loss_dict = self.dbde.training_loss(s0, cond) 
 		dbde_loss = dbde_loss_dict["loss"]
 		dbde_loss.backward()
 		self.dbde_optimizer.step()
@@ -3299,15 +3309,22 @@ class Q_SACRunner(TD3SACRunner):
 		if self.diffusion_model:
 			num_dbde_samples = 10
 			dbde_cond = self._build_dbde_cond(batch)
-			dbde_output = self.dbde.sample(dbde_cond, num_dbde_samples)  # [B*num_dbde_samples, obs_dim]
+			# flatten time dimension for diffusion sampling
+			dbde_cond_flat = dbde_cond.reshape(-1, dbde_cond.shape[-1]) if dbde_cond.dim() > 2 else dbde_cond
+			c_in_flat = batch.c_in_online_cur.reshape(-1, batch.c_in_online_cur.shape[-1]) if batch.c_in_online_cur.dim() > 2 else batch.c_in_online_cur
+			flat_size = dbde_cond_flat.shape[0]
+			dbde_output = self.dbde.sample(dbde_cond_flat, num_dbde_samples)  # [B*T*num_samples, obs_dim]
 			if self.cfg.global_cfg.critic_input.history_merge_method != "stack_rnn":
 				obs_dim = self.env.observation_space.shape[0]
 				# 复制 critic 输入，再用 DBDE 生成的 obs 替换 obs 部分，保持动作/历史不变
-				c_in_expanded = batch.c_in_online_cur.repeat_interleave(num_dbde_samples, dim=0).clone()
+				c_in_expanded = c_in_flat.repeat_interleave(num_dbde_samples, dim=0).clone()
 				c_in_expanded[..., :obs_dim] = dbde_output
 				q_dbde, _ = self.critic1(c_in_expanded, None)  # [B*num_dbde_samples, 1]
-				q_dbde = q_dbde.view(batch.c_in_online_cur.shape[0], num_dbde_samples, -1)
-				q_var = q_dbde.var(dim=1, unbiased=False).mean(dim=1, keepdim=True)  # [B,1]
+				q_dbde = q_dbde.view(flat_size, num_dbde_samples, -1)
+				q_var = q_dbde.var(dim=1, unbiased=False).mean(dim=1, keepdim=True)  # [B*T,1]
+				# reshape back to sequence shape if needed
+				if batch.valid_mask.dim() > 1:
+					q_var = q_var.view(*batch.valid_mask.shape, 1)
 				q_uncertainty_weight = 1.0 / (1.0 + q_var)  # 方差越大，权重越小
 				q_uncertainty_weight = q_uncertainty_weight.detach()
 			else:

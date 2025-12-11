@@ -1,0 +1,8 @@
+
+conda activate delay-env
+export UDATADIR=/mlx_devbox/users/tujunqi/playground/delay_bytedance/delay_bytedance/data # directory for dataset
+export UPRJDIR=/mlx_devbox/users/tujunqi/playground/delay_bytedance/delay_bytedance/code # directory for code
+export UOUTDIR=/mlx_devbox/users/tujunqi/playground/delay_bytedance/delay_bytedance/output # directory for outputs such as logs
+export NUM_WORKERS=0 # number of workers to use
+mkdir -p $UDATADIR $UPRJDIR $UOUTDIR
+LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/mlx_devbox/users/tujunqi/playground/.mujoco/mujoco210/bin
