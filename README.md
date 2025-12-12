@@ -168,6 +168,7 @@ Here is some examples of a customized run:
     python src/entry.py \
     	experiment=cat_mlp \
     	env.name=HalfCheetah-v4 \
+        
     	env.delay=3
     
     ```

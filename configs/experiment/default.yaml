@@ -30,7 +30,10 @@ global_cfg: # would be passed to actor, critic1, critic2, policy, env
     obs_pred:
       turn_on: false 
       feat_dim: 256
-      num_steps: 50 # diffusion steps used by DBDE
+      num_steps: 10 # diffusion steps used by DBDE
+      dbde_num_samples: 4 # number of DBDE samples per transition when computing q-uncertainty
+      dbde_sample_chunk_size: 2048 # chunk size for DBDE sampling/training to limit compute
+      dbde_update_interval: 30 # how often (in update steps) DBDE is optimized
       middle_detach: true 
       input_type: "feat" # obs or feat
       net_type: mlp # vae or mlp

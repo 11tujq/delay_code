@@ -76,3 +76,305 @@
 [2025-12-11 16:08:20,361][asyncio][WARNING] - socket.send() raised exception.
 [2025-12-11 16:08:20,361][asyncio][WARNING] - socket.send() raised exception.
 [2025-12-11 16:08:20,362][asyncio][WARNING] - socket.send() raised exception.
+[2025-12-12 11:10:56,489][utils][WARNING] - Field 'net' not found in config. Skipping 'net' config printing...
+[2025-12-12 11:10:56,489][utils][WARNING] - Field 'optimizer' not found in config. Skipping 'optimizer' config printing...
+[2025-12-12 11:10:56,490][utils][WARNING] - Field 'train_collector' not found in config. Skipping 'train_collector' config printing...
+[2025-12-12 11:10:56,490][utils][WARNING] - Field 'test_collector' not found in config. Skipping 'test_collector' config printing...
+[2025-12-12 11:13:34,045][utils][WARNING] - Field 'net' not found in config. Skipping 'net' config printing...
+[2025-12-12 11:13:34,046][utils][WARNING] - Field 'optimizer' not found in config. Skipping 'optimizer' config printing...
+[2025-12-12 11:13:34,046][utils][WARNING] - Field 'train_collector' not found in config. Skipping 'train_collector' config printing...
+[2025-12-12 11:13:34,047][utils][WARNING] - Field 'test_collector' not found in config. Skipping 'test_collector' config printing...
+[2025-12-12 11:24:46,337][asyncio][WARNING] - socket.send() raised exception.
+[2025-12-12 11:24:46,338][asyncio][WARNING] - socket.send() raised exception.
+[2025-12-12 11:24:46,441][asyncio][WARNING] - socket.send() raised exception.
+[2025-12-12 11:24:46,441][asyncio][WARNING] - socket.send() raised exception.
+[2025-12-12 11:24:46,546][asyncio][WARNING] - socket.send() raised exception.
+[2025-12-12 11:24:46,546][asyncio][WARNING] - socket.send() raised exception.
+[2025-12-12 11:24:46,650][asyncio][WARNING] - socket.send() raised exception.
+[2025-12-12 11:24:46,651][asyncio][WARNING] - socket.send() raised exception.
+[2025-12-12 11:24:46,755][asyncio][WARNING] - socket.send() raised exception.
+[2025-12-12 11:24:46,755][asyncio][WARNING] - socket.send() raised exception.
+[2025-12-12 11:24:46,860][asyncio][WARNING] - socket.send() raised exception.
+[2025-12-12 11:24:46,860][asyncio][WARNING] - socket.send() raised exception.
+[2025-12-12 11:24:46,963][asyncio][WARNING] - socket.send() raised exception.
+[2025-12-12 11:24:46,963][asyncio][WARNING] - socket.send() raised exception.
+[2025-12-12 11:24:47,066][asyncio][WARNING] - socket.send() raised exception.
+[2025-12-12 11:24:47,066][asyncio][WARNING] - socket.send() raised exception.
+[2025-12-12 11:24:47,170][asyncio][WARNING] - socket.send() raised exception.
+[2025-12-12 11:24:47,170][asyncio][WARNING] - socket.send() raised exception.
+[2025-12-12 11:24:47,183][asyncio][WARNING] - socket.send() raised exception.
+[2025-12-12 11:24:47,184][asyncio][WARNING] - socket.send() raised exception.
+[2025-12-12 11:24:47,187][asyncio][WARNING] - socket.send() raised exception.
+[2025-12-12 11:24:47,188][asyncio][WARNING] - socket.send() raised exception.
+[2025-12-12 11:24:47,191][asyncio][WARNING] - socket.send() raised exception.
+[2025-12-12 11:24:47,192][asyncio][WARNING] - socket.send() raised exception.
+[2025-12-12 11:24:47,201][asyncio][WARNING] - socket.send() raised exception.
+[2025-12-12 11:24:47,202][asyncio][WARNING] - socket.send() raised exception.
+[2025-12-12 11:24:47,206][asyncio][WARNING] - socket.send() raised exception.
+[2025-12-12 11:24:47,206][asyncio][WARNING] - socket.send() raised exception.
+[2025-12-12 11:24:47,211][asyncio][WARNING] - socket.send() raised exception.
+[2025-12-12 11:24:47,211][asyncio][WARNING] - socket.send() raised exception.
+[2025-12-12 11:24:47,214][asyncio][WARNING] - socket.send() raised exception.
+[2025-12-12 11:24:47,214][asyncio][WARNING] - socket.send() raised exception.
+[2025-12-12 11:24:47,216][asyncio][WARNING] - socket.send() raised exception.
+[2025-12-12 11:24:47,217][asyncio][WARNING] - socket.send() raised exception.
+[2025-12-12 11:24:47,217][asyncio][WARNING] - socket.send() raised exception.
+[2025-12-12 11:24:47,218][asyncio][WARNING] - socket.send() raised exception.
+[2025-12-12 11:24:53,612][asyncio][WARNING] - socket.send() raised exception.
+[2025-12-12 11:24:53,612][asyncio][WARNING] - socket.send() raised exception.
+[2025-12-12 11:24:53,717][asyncio][WARNING] - socket.send() raised exception.
+[2025-12-12 11:24:53,717][asyncio][WARNING] - socket.send() raised exception.
+[2025-12-12 11:24:53,822][asyncio][WARNING] - socket.send() raised exception.
+[2025-12-12 11:24:53,822][asyncio][WARNING] - socket.send() raised exception.
+[2025-12-12 11:24:53,924][asyncio][WARNING] - socket.send() raised exception.
+[2025-12-12 11:24:53,924][asyncio][WARNING] - socket.send() raised exception.
+[2025-12-12 11:24:54,028][asyncio][WARNING] - socket.send() raised exception.
+[2025-12-12 11:24:54,029][asyncio][WARNING] - socket.send() raised exception.
+[2025-12-12 11:24:54,033][asyncio][WARNING] - socket.send() raised exception.
+[2025-12-12 11:24:54,033][asyncio][WARNING] - socket.send() raised exception.
+[2025-12-12 11:24:54,037][asyncio][WARNING] - socket.send() raised exception.
+[2025-12-12 11:24:54,037][asyncio][WARNING] - socket.send() raised exception.
+[2025-12-12 11:24:54,041][asyncio][WARNING] - socket.send() raised exception.
+[2025-12-12 11:24:54,041][asyncio][WARNING] - socket.send() raised exception.
+[2025-12-12 11:24:54,046][asyncio][WARNING] - socket.send() raised exception.
+[2025-12-12 11:24:54,046][asyncio][WARNING] - socket.send() raised exception.
+[2025-12-12 11:24:54,050][asyncio][WARNING] - socket.send() raised exception.
+[2025-12-12 11:24:54,050][asyncio][WARNING] - socket.send() raised exception.
+[2025-12-12 11:24:54,055][asyncio][WARNING] - socket.send() raised exception.
+[2025-12-12 11:24:54,055][asyncio][WARNING] - socket.send() raised exception.
+[2025-12-12 11:24:54,059][asyncio][WARNING] - socket.send() raised exception.
+[2025-12-12 11:24:54,059][asyncio][WARNING] - socket.send() raised exception.
+[2025-12-12 11:24:54,064][asyncio][WARNING] - socket.send() raised exception.
+[2025-12-12 11:24:54,064][asyncio][WARNING] - socket.send() raised exception.
+[2025-12-12 11:24:54,068][asyncio][WARNING] - socket.send() raised exception.
+[2025-12-12 11:24:54,068][asyncio][WARNING] - socket.send() raised exception.
+[2025-12-12 11:50:35,665][utils][WARNING] - Field 'net' not found in config. Skipping 'net' config printing...
+[2025-12-12 11:50:35,666][utils][WARNING] - Field 'optimizer' not found in config. Skipping 'optimizer' config printing...
+[2025-12-12 11:50:35,666][utils][WARNING] - Field 'train_collector' not found in config. Skipping 'train_collector' config printing...
+[2025-12-12 11:50:35,666][utils][WARNING] - Field 'test_collector' not found in config. Skipping 'test_collector' config printing...
+[2025-12-12 12:00:07,150][asyncio][WARNING] - socket.send() raised exception.
+[2025-12-12 12:00:07,151][asyncio][WARNING] - socket.send() raised exception.
+[2025-12-12 12:00:07,254][asyncio][WARNING] - socket.send() raised exception.
+[2025-12-12 12:00:07,255][asyncio][WARNING] - socket.send() raised exception.
+[2025-12-12 12:00:07,359][asyncio][WARNING] - socket.send() raised exception.
+[2025-12-12 12:00:07,359][asyncio][WARNING] - socket.send() raised exception.
+[2025-12-12 12:00:07,369][asyncio][WARNING] - socket.send() raised exception.
+[2025-12-12 12:00:07,369][asyncio][WARNING] - socket.send() raised exception.
+[2025-12-12 12:00:07,373][asyncio][WARNING] - socket.send() raised exception.
+[2025-12-12 12:00:07,373][asyncio][WARNING] - socket.send() raised exception.
+[2025-12-12 12:00:07,377][asyncio][WARNING] - socket.send() raised exception.
+[2025-12-12 12:00:07,377][asyncio][WARNING] - socket.send() raised exception.
+[2025-12-12 12:00:07,381][asyncio][WARNING] - socket.send() raised exception.
+[2025-12-12 12:00:07,381][asyncio][WARNING] - socket.send() raised exception.
+[2025-12-12 12:00:07,385][asyncio][WARNING] - socket.send() raised exception.
+[2025-12-12 12:00:07,385][asyncio][WARNING] - socket.send() raised exception.
+[2025-12-12 12:00:07,388][asyncio][WARNING] - socket.send() raised exception.
+[2025-12-12 12:00:07,389][asyncio][WARNING] - socket.send() raised exception.
+[2025-12-12 12:00:07,391][asyncio][WARNING] - socket.send() raised exception.
+[2025-12-12 12:00:07,392][asyncio][WARNING] - socket.send() raised exception.
+[2025-12-12 12:00:07,399][asyncio][WARNING] - socket.send() raised exception.
+[2025-12-12 12:00:07,399][asyncio][WARNING] - socket.send() raised exception.
+[2025-12-12 12:00:07,399][asyncio][WARNING] - socket.send() raised exception.
+[2025-12-12 12:00:07,399][asyncio][WARNING] - socket.send() raised exception.
+[2025-12-12 13:23:01,400][utils][WARNING] - Field 'net' not found in config. Skipping 'net' config printing...
+[2025-12-12 13:23:01,401][utils][WARNING] - Field 'optimizer' not found in config. Skipping 'optimizer' config printing...
+[2025-12-12 13:23:01,401][utils][WARNING] - Field 'train_collector' not found in config. Skipping 'train_collector' config printing...
+[2025-12-12 13:23:01,402][utils][WARNING] - Field 'test_collector' not found in config. Skipping 'test_collector' config printing...
+[2025-12-12 13:26:31,703][asyncio][WARNING] - socket.send() raised exception.
+[2025-12-12 13:26:31,704][asyncio][WARNING] - socket.send() raised exception.
+[2025-12-12 13:26:31,807][asyncio][WARNING] - socket.send() raised exception.
+[2025-12-12 13:26:31,807][asyncio][WARNING] - socket.send() raised exception.
+[2025-12-12 13:26:31,911][asyncio][WARNING] - socket.send() raised exception.
+[2025-12-12 13:26:31,912][asyncio][WARNING] - socket.send() raised exception.
+[2025-12-12 13:26:31,928][asyncio][WARNING] - socket.send() raised exception.
+[2025-12-12 13:26:31,932][asyncio][WARNING] - socket.send() raised exception.
+[2025-12-12 13:26:31,933][asyncio][WARNING] - socket.send() raised exception.
+[2025-12-12 13:26:31,937][asyncio][WARNING] - socket.send() raised exception.
+[2025-12-12 13:26:31,940][asyncio][WARNING] - socket.send() raised exception.
+[2025-12-12 13:26:31,941][asyncio][WARNING] - socket.send() raised exception.
+[2025-12-12 13:26:31,948][asyncio][WARNING] - socket.send() raised exception.
+[2025-12-12 13:26:31,949][asyncio][WARNING] - socket.send() raised exception.
+[2025-12-12 13:26:31,953][asyncio][WARNING] - socket.send() raised exception.
+[2025-12-12 13:26:31,956][asyncio][WARNING] - socket.send() raised exception.
+[2025-12-12 13:26:31,963][asyncio][WARNING] - socket.send() raised exception.
+[2025-12-12 13:26:31,967][asyncio][WARNING] - socket.send() raised exception.
+[2025-12-12 13:26:31,968][asyncio][WARNING] - socket.send() raised exception.
+[2025-12-12 13:26:31,968][asyncio][WARNING] - socket.send() raised exception.
+[2025-12-12 13:26:31,968][asyncio][WARNING] - socket.send() raised exception.
+[2025-12-12 13:26:31,968][asyncio][WARNING] - socket.send() raised exception.
+[2025-12-12 13:26:31,968][asyncio][WARNING] - socket.send() raised exception.
+[2025-12-12 13:26:31,969][asyncio][WARNING] - socket.send() raised exception.
+[2025-12-12 13:26:31,976][asyncio][WARNING] - socket.send() raised exception.
+[2025-12-12 13:26:31,980][asyncio][WARNING] - socket.send() raised exception.
+[2025-12-12 13:26:31,981][asyncio][WARNING] - socket.send() raised exception.
+[2025-12-12 13:26:31,984][asyncio][WARNING] - socket.send() raised exception.
+[2025-12-12 13:26:31,984][asyncio][WARNING] - socket.send() raised exception.
+[2025-12-12 13:26:31,985][asyncio][WARNING] - socket.send() raised exception.
+[2025-12-12 13:26:31,987][asyncio][WARNING] - socket.send() raised exception.
+[2025-12-12 13:26:31,987][asyncio][WARNING] - socket.send() raised exception.
+[2025-12-12 13:26:31,987][asyncio][WARNING] - socket.send() raised exception.
+[2025-12-12 13:26:31,987][asyncio][WARNING] - socket.send() raised exception.
+[2025-12-12 13:26:31,988][asyncio][WARNING] - socket.send() raised exception.
+[2025-12-12 13:26:31,988][asyncio][WARNING] - socket.send() raised exception.
+[2025-12-12 13:26:31,988][asyncio][WARNING] - socket.send() raised exception.
+[2025-12-12 13:26:31,988][asyncio][WARNING] - socket.send() raised exception.
+[2025-12-12 13:27:41,956][utils][WARNING] - Field 'net' not found in config. Skipping 'net' config printing...
+[2025-12-12 13:27:41,956][utils][WARNING] - Field 'optimizer' not found in config. Skipping 'optimizer' config printing...
+[2025-12-12 13:27:41,957][utils][WARNING] - Field 'train_collector' not found in config. Skipping 'train_collector' config printing...
+[2025-12-12 13:27:41,957][utils][WARNING] - Field 'test_collector' not found in config. Skipping 'test_collector' config printing...
+[2025-12-12 15:02:00,125][asyncio][WARNING] - socket.send() raised exception.
+[2025-12-12 15:02:00,126][asyncio][WARNING] - socket.send() raised exception.
+[2025-12-12 15:02:00,192][asyncio][WARNING] - socket.send() raised exception.
+[2025-12-12 15:02:00,192][asyncio][WARNING] - socket.send() raised exception.
+[2025-12-12 15:02:00,196][asyncio][WARNING] - socket.send() raised exception.
+[2025-12-12 15:02:00,197][asyncio][WARNING] - socket.send() raised exception.
+[2025-12-12 15:02:00,201][asyncio][WARNING] - socket.send() raised exception.
+[2025-12-12 15:02:00,202][asyncio][WARNING] - socket.send() raised exception.
+[2025-12-12 15:02:00,207][asyncio][WARNING] - socket.send() raised exception.
+[2025-12-12 15:02:00,207][asyncio][WARNING] - socket.send() raised exception.
+[2025-12-12 15:02:00,211][asyncio][WARNING] - socket.send() raised exception.
+[2025-12-12 15:02:00,212][asyncio][WARNING] - socket.send() raised exception.
+[2025-12-12 15:02:00,216][asyncio][WARNING] - socket.send() raised exception.
+[2025-12-12 15:02:00,216][asyncio][WARNING] - socket.send() raised exception.
+[2025-12-12 15:02:00,221][asyncio][WARNING] - socket.send() raised exception.
+[2025-12-12 15:02:00,222][asyncio][WARNING] - socket.send() raised exception.
+[2025-12-12 15:02:00,227][asyncio][WARNING] - socket.send() raised exception.
+[2025-12-12 15:02:00,227][asyncio][WARNING] - socket.send() raised exception.
+[2025-12-12 15:02:00,232][asyncio][WARNING] - socket.send() raised exception.
+[2025-12-12 15:02:00,232][asyncio][WARNING] - socket.send() raised exception.
+[2025-12-12 15:02:00,236][asyncio][WARNING] - socket.send() raised exception.
+[2025-12-12 15:02:00,236][asyncio][WARNING] - socket.send() raised exception.
+[2025-12-12 15:02:00,241][asyncio][WARNING] - socket.send() raised exception.
+[2025-12-12 15:02:00,241][asyncio][WARNING] - socket.send() raised exception.
+[2025-12-12 15:02:00,245][asyncio][WARNING] - socket.send() raised exception.
+[2025-12-12 15:02:00,246][asyncio][WARNING] - socket.send() raised exception.
+[2025-12-12 15:02:00,250][asyncio][WARNING] - socket.send() raised exception.
+[2025-12-12 15:02:00,250][asyncio][WARNING] - socket.send() raised exception.
+[2025-12-12 15:02:00,255][asyncio][WARNING] - socket.send() raised exception.
+[2025-12-12 15:02:00,255][asyncio][WARNING] - socket.send() raised exception.
+[2025-12-12 15:02:00,260][asyncio][WARNING] - socket.send() raised exception.
+[2025-12-12 15:02:00,263][asyncio][WARNING] - socket.send() raised exception.
+[2025-12-12 15:02:00,270][asyncio][WARNING] - socket.send() raised exception.
+[2025-12-12 15:02:00,270][asyncio][WARNING] - socket.send() raised exception.
+[2025-12-12 15:02:00,271][asyncio][WARNING] - socket.send() raised exception.
+[2025-12-12 15:02:00,271][asyncio][WARNING] - socket.send() raised exception.
+[2025-12-12 15:33:02,951][utils][WARNING] - Field 'net' not found in config. Skipping 'net' config printing...
+[2025-12-12 15:33:02,951][utils][WARNING] - Field 'optimizer' not found in config. Skipping 'optimizer' config printing...
+[2025-12-12 15:33:02,952][utils][WARNING] - Field 'train_collector' not found in config. Skipping 'train_collector' config printing...
+[2025-12-12 15:33:02,952][utils][WARNING] - Field 'test_collector' not found in config. Skipping 'test_collector' config printing...
+[2025-12-12 15:34:08,372][asyncio][WARNING] - socket.send() raised exception.
+[2025-12-12 15:34:08,373][asyncio][WARNING] - socket.send() raised exception.
+[2025-12-12 15:34:08,380][asyncio][WARNING] - socket.send() raised exception.
+[2025-12-12 15:34:08,380][asyncio][WARNING] - socket.send() raised exception.
+[2025-12-12 15:34:08,380][asyncio][WARNING] - socket.send() raised exception.
+[2025-12-12 15:34:08,380][asyncio][WARNING] - socket.send() raised exception.
+[2025-12-12 15:34:08,380][asyncio][WARNING] - socket.send() raised exception.
+[2025-12-12 15:34:08,381][asyncio][WARNING] - socket.send() raised exception.
+[2025-12-12 15:34:08,381][asyncio][WARNING] - socket.send() raised exception.
+[2025-12-12 15:34:08,381][asyncio][WARNING] - socket.send() raised exception.
+[2025-12-12 15:34:08,381][asyncio][WARNING] - socket.send() raised exception.
+[2025-12-12 15:34:08,381][asyncio][WARNING] - socket.send() raised exception.
+[2025-12-12 15:34:08,381][asyncio][WARNING] - socket.send() raised exception.
+[2025-12-12 15:34:08,382][asyncio][WARNING] - socket.send() raised exception.
+[2025-12-12 15:34:08,382][asyncio][WARNING] - socket.send() raised exception.
+[2025-12-12 15:34:08,382][asyncio][WARNING] - socket.send() raised exception.
+[2025-12-12 15:34:08,382][asyncio][WARNING] - socket.send() raised exception.
+[2025-12-12 15:34:08,382][asyncio][WARNING] - socket.send() raised exception.
+[2025-12-12 15:34:08,385][asyncio][WARNING] - socket.send() raised exception.
+[2025-12-12 15:34:08,385][asyncio][WARNING] - socket.send() raised exception.
+[2025-12-12 15:34:49,452][utils][WARNING] - Field 'net' not found in config. Skipping 'net' config printing...
+[2025-12-12 15:34:49,452][utils][WARNING] - Field 'optimizer' not found in config. Skipping 'optimizer' config printing...
+[2025-12-12 15:34:49,452][utils][WARNING] - Field 'train_collector' not found in config. Skipping 'train_collector' config printing...
+[2025-12-12 15:34:49,452][utils][WARNING] - Field 'test_collector' not found in config. Skipping 'test_collector' config printing...
+[2025-12-12 15:36:34,221][asyncio][WARNING] - socket.send() raised exception.
+[2025-12-12 15:36:34,221][asyncio][WARNING] - socket.send() raised exception.
+[2025-12-12 15:36:34,323][asyncio][WARNING] - socket.send() raised exception.
+[2025-12-12 15:36:34,323][asyncio][WARNING] - socket.send() raised exception.
+[2025-12-12 15:36:34,425][asyncio][WARNING] - socket.send() raised exception.
+[2025-12-12 15:36:34,426][asyncio][WARNING] - socket.send() raised exception.
+[2025-12-12 15:36:34,497][asyncio][WARNING] - socket.send() raised exception.
+[2025-12-12 15:36:34,501][asyncio][WARNING] - socket.send() raised exception.
+[2025-12-12 15:36:34,501][asyncio][WARNING] - socket.send() raised exception.
+[2025-12-12 15:36:34,501][asyncio][WARNING] - socket.send() raised exception.
+[2025-12-12 15:36:34,501][asyncio][WARNING] - socket.send() raised exception.
+[2025-12-12 15:36:34,501][asyncio][WARNING] - socket.send() raised exception.
+[2025-12-12 15:36:34,505][asyncio][WARNING] - socket.send() raised exception.
+[2025-12-12 15:36:34,506][asyncio][WARNING] - socket.send() raised exception.
+[2025-12-12 15:36:34,508][asyncio][WARNING] - socket.send() raised exception.
+[2025-12-12 15:36:34,510][asyncio][WARNING] - socket.send() raised exception.
+[2025-12-12 15:36:34,512][asyncio][WARNING] - socket.send() raised exception.
+[2025-12-12 15:36:34,514][asyncio][WARNING] - socket.send() raised exception.
+[2025-12-12 15:36:34,516][asyncio][WARNING] - socket.send() raised exception.
+[2025-12-12 15:36:34,516][asyncio][WARNING] - socket.send() raised exception.
+[2025-12-12 15:36:34,521][asyncio][WARNING] - socket.send() raised exception.
+[2025-12-12 15:36:34,523][asyncio][WARNING] - socket.send() raised exception.
+[2025-12-12 15:36:34,524][asyncio][WARNING] - socket.send() raised exception.
+[2025-12-12 15:36:34,524][asyncio][WARNING] - socket.send() raised exception.
+[2025-12-12 15:36:34,524][asyncio][WARNING] - socket.send() raised exception.
+[2025-12-12 15:36:34,524][asyncio][WARNING] - socket.send() raised exception.
+[2025-12-12 15:36:34,524][asyncio][WARNING] - socket.send() raised exception.
+[2025-12-12 15:36:34,525][asyncio][WARNING] - socket.send() raised exception.
+[2025-12-12 15:36:34,525][asyncio][WARNING] - socket.send() raised exception.
+[2025-12-12 15:36:34,525][asyncio][WARNING] - socket.send() raised exception.
+[2025-12-12 15:36:34,525][asyncio][WARNING] - socket.send() raised exception.
+[2025-12-12 15:36:34,525][asyncio][WARNING] - socket.send() raised exception.
+[2025-12-12 15:36:34,525][asyncio][WARNING] - socket.send() raised exception.
+[2025-12-12 15:36:34,525][asyncio][WARNING] - socket.send() raised exception.
+[2025-12-12 15:36:34,532][asyncio][WARNING] - socket.send() raised exception.
+[2025-12-12 15:36:34,532][asyncio][WARNING] - socket.send() raised exception.
+[2025-12-12 15:36:34,533][asyncio][WARNING] - socket.send() raised exception.
+[2025-12-12 15:36:34,533][asyncio][WARNING] - socket.send() raised exception.
+[2025-12-12 15:36:34,533][asyncio][WARNING] - socket.send() raised exception.
+[2025-12-12 15:36:34,533][asyncio][WARNING] - socket.send() raised exception.
+[2025-12-12 15:42:35,030][utils][WARNING] - Field 'net' not found in config. Skipping 'net' config printing...
+[2025-12-12 15:42:35,030][utils][WARNING] - Field 'optimizer' not found in config. Skipping 'optimizer' config printing...
+[2025-12-12 15:42:35,031][utils][WARNING] - Field 'train_collector' not found in config. Skipping 'train_collector' config printing...
+[2025-12-12 15:42:35,031][utils][WARNING] - Field 'test_collector' not found in config. Skipping 'test_collector' config printing...
+[2025-12-12 15:51:39,152][utils][WARNING] - Field 'net' not found in config. Skipping 'net' config printing...
+[2025-12-12 15:51:39,153][utils][WARNING] - Field 'optimizer' not found in config. Skipping 'optimizer' config printing...
+[2025-12-12 15:51:39,153][utils][WARNING] - Field 'train_collector' not found in config. Skipping 'train_collector' config printing...
+[2025-12-12 15:51:39,153][utils][WARNING] - Field 'test_collector' not found in config. Skipping 'test_collector' config printing...
+[2025-12-12 15:52:53,864][asyncio][WARNING] - socket.send() raised exception.
+[2025-12-12 15:52:53,865][asyncio][WARNING] - socket.send() raised exception.
+[2025-12-12 15:52:53,967][asyncio][WARNING] - socket.send() raised exception.
+[2025-12-12 15:52:53,968][asyncio][WARNING] - socket.send() raised exception.
+[2025-12-12 15:52:54,070][asyncio][WARNING] - socket.send() raised exception.
+[2025-12-12 15:52:54,070][asyncio][WARNING] - socket.send() raised exception.
+[2025-12-12 15:52:54,139][asyncio][WARNING] - socket.send() raised exception.
+[2025-12-12 15:52:54,141][asyncio][WARNING] - socket.send() raised exception.
+[2025-12-12 15:52:54,141][asyncio][WARNING] - socket.send() raised exception.
+[2025-12-12 15:52:54,142][asyncio][WARNING] - socket.send() raised exception.
+[2025-12-12 15:52:54,142][asyncio][WARNING] - socket.send() raised exception.
+[2025-12-12 15:52:54,142][asyncio][WARNING] - socket.send() raised exception.
+[2025-12-12 15:52:54,146][asyncio][WARNING] - socket.send() raised exception.
+[2025-12-12 15:52:54,146][asyncio][WARNING] - socket.send() raised exception.
+[2025-12-12 15:52:54,147][asyncio][WARNING] - socket.send() raised exception.
+[2025-12-12 15:52:54,147][asyncio][WARNING] - socket.send() raised exception.
+[2025-12-12 15:52:54,151][asyncio][WARNING] - socket.send() raised exception.
+[2025-12-12 15:52:54,151][asyncio][WARNING] - socket.send() raised exception.
+[2025-12-12 15:52:54,151][asyncio][WARNING] - socket.send() raised exception.
+[2025-12-12 15:52:54,153][asyncio][WARNING] - socket.send() raised exception.
+[2025-12-12 15:52:54,160][asyncio][WARNING] - socket.send() raised exception.
+[2025-12-12 15:52:54,161][asyncio][WARNING] - socket.send() raised exception.
+[2025-12-12 15:52:54,161][asyncio][WARNING] - socket.send() raised exception.
+[2025-12-12 15:52:54,161][asyncio][WARNING] - socket.send() raised exception.
+[2025-12-12 15:52:54,164][asyncio][WARNING] - socket.send() raised exception.
+[2025-12-12 15:52:54,166][asyncio][WARNING] - socket.send() raised exception.
+[2025-12-12 15:52:54,166][asyncio][WARNING] - socket.send() raised exception.
+[2025-12-12 15:52:54,167][asyncio][WARNING] - socket.send() raised exception.
+[2025-12-12 15:52:54,167][asyncio][WARNING] - socket.send() raised exception.
+[2025-12-12 15:52:54,167][asyncio][WARNING] - socket.send() raised exception.
+[2025-12-12 15:52:54,171][asyncio][WARNING] - socket.send() raised exception.
+[2025-12-12 15:52:54,173][asyncio][WARNING] - socket.send() raised exception.
+[2025-12-12 15:52:54,175][asyncio][WARNING] - socket.send() raised exception.
+[2025-12-12 15:52:54,175][asyncio][WARNING] - socket.send() raised exception.
+[2025-12-12 15:52:54,176][asyncio][WARNING] - socket.send() raised exception.
+[2025-12-12 15:52:54,176][asyncio][WARNING] - socket.send() raised exception.
+[2025-12-12 15:52:54,176][asyncio][WARNING] - socket.send() raised exception.
+[2025-12-12 15:52:54,176][asyncio][WARNING] - socket.send() raised exception.
+[2025-12-12 15:52:54,177][asyncio][WARNING] - socket.send() raised exception.
+[2025-12-12 15:52:54,177][asyncio][WARNING] - socket.send() raised exception.
+[2025-12-12 15:53:38,295][utils][WARNING] - Field 'net' not found in config. Skipping 'net' config printing...
+[2025-12-12 15:53:38,295][utils][WARNING] - Field 'optimizer' not found in config. Skipping 'optimizer' config printing...
+[2025-12-12 15:53:38,295][utils][WARNING] - Field 'train_collector' not found in config. Skipping 'train_collector' config printing...
+[2025-12-12 15:53:38,296][utils][WARNING] - Field 'test_collector' not found in config. Skipping 'test_collector' config printing...

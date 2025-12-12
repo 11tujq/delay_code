@@ -1903,6 +1903,9 @@ class TD3SACRunner(OfflineRLRunner):
 
 		# diffusion model flag (used in q_sac)
 		self.diffusion_model = (self.ALGORITHM == "q_sac")
+		self.dbde_num_samples = 0
+		self.dbde_sample_chunk_size = None
+		self.dbde_update_interval = 1
 
 		self.actor_old.eval()
 		self.critic1.train()
@@ -1967,6 +1970,11 @@ class TD3SACRunner(OfflineRLRunner):
 					device=self.cfg.device,
 				)
 			self.dbde_optimizer = torch.optim.Adam(self.dbde.parameters(), lr=1e-3)
+			self.dbde_num_samples = max(1, int(getattr(self.global_cfg.actor_input.obs_pred, "dbde_num_samples", 4)))
+			self.dbde_sample_chunk_size = int(getattr(self.global_cfg.actor_input.obs_pred, "dbde_sample_chunk_size", 2048))
+			if self.dbde_sample_chunk_size <= 0:
+				self.dbde_sample_chunk_size = None
+			self.dbde_update_interval = max(1, int(getattr(self.global_cfg.actor_input.obs_pred, "dbde_update_interval", 1)))
 		if self.global_cfg.actor_input.obs_encode.turn_on:
 			self.encode_net = self.global_cfg.actor_input.obs_encode.net(
 				state_shape=self.env.observation_space.shape,
@@ -2219,7 +2227,7 @@ class TD3SACRunner(OfflineRLRunner):
 			self._soft_update(self.actor_old, self.actor, self.cfg.policy.tau)
 		elif self.ALGORITHM == "q_sac":
 			
-			if getattr(self, "diffusion_model", False):
+			if getattr(self, "diffusion_model", False) and self.update_cnt % self.dbde_update_interval == 0:
 				self.update_dbde(batch)
 			self.update_critic(batch)
 			self.update_actor(batch)
@@ -3207,6 +3215,51 @@ class DDPGRunner(TD3SACRunner):
 class Q_SACRunner(TD3SACRunner):
 	ALGORITHM = "q_sac"
 	
+	@staticmethod
+	def _flatten_tensor(tensor):
+		return tensor.reshape(-1, tensor.shape[-1]) if tensor.dim() > 2 else tensor
+	
+	def _compute_q_uncertainty_weight(self, batch, dbde_cond, num_dbde_samples):
+		if not hasattr(batch, "valid_mask"):
+			return 1.0
+		cond_flat = self._flatten_tensor(dbde_cond)
+		device = cond_flat.device
+		mask = batch.valid_mask.reshape(-1).to(dtype=torch.bool, device=device)
+		if mask.sum() == 0:
+			return 1.0
+		c_in_flat = self._flatten_tensor(batch.c_in_online_cur)
+		if c_in_flat.device != device:
+			c_in_flat = c_in_flat.to(device)
+		cond_valid = cond_flat[mask]
+		c_in_valid = c_in_flat[mask]
+		if cond_valid.shape[0] == 0:
+			return 1.0
+		
+		obs_dim = self.env.observation_space.shape[0]
+		chunk_size = self.dbde_sample_chunk_size or cond_valid.shape[0]
+		chunk_size = max(1, chunk_size)
+		q_var_list = []
+		with torch.no_grad():
+			for start in range(0, cond_valid.shape[0], chunk_size):
+				end = min(start + chunk_size, cond_valid.shape[0])
+				cond_chunk = cond_valid[start:end]
+				c_in_chunk = c_in_valid[start:end]
+				dbde_output = self.dbde.sample(cond_chunk, num_dbde_samples)
+				c_in_expanded = c_in_chunk.repeat_interleave(num_dbde_samples, dim=0).clone()
+				c_in_expanded[..., :obs_dim] = dbde_output
+				q_dbde, _ = self.critic1(c_in_expanded, None)
+				q_dbde = q_dbde.view(cond_chunk.shape[0], num_dbde_samples, -1)
+				q_var = q_dbde.var(dim=1, unbiased=False).mean(dim=1, keepdim=True)
+				q_var_list.append(q_var)
+		if not q_var_list:
+			return 1.0
+		q_var_all = torch.cat(q_var_list, dim=0)
+		self.record("learn/dbde_q_var_mean", q_var_all.mean().item())
+		weights_flat = torch.ones(cond_flat.shape[0], 1, device=device)
+		weights_flat[mask] = 1.0 / (1.0 + q_var_all)
+		weights = weights_flat.view(*batch.valid_mask.shape, 1)
+		return weights.detach()
+	
 	def _build_dbde_cond(self, batch):
 		"""Construct DBDE condition as delayed obs + history actions before any pred/encode override."""
 		cond = batch.dobs
@@ -3221,17 +3274,31 @@ class Q_SACRunner(TD3SACRunner):
 	def update_dbde(self,batch):
 		self.dbde_optimizer.zero_grad()
 		dbde_cond = self._build_dbde_cond(batch)
-		# flatten time dimension so diffusion operates on 2D [B*T, dim]
-		s0 = batch.oobs
-		cond = dbde_cond
-		if s0.dim() > 2:
-			bt = s0.shape[0] * s0.shape[1]
-			s0 = s0.reshape(bt, -1)
-			cond = cond.reshape(bt, -1)
-		dbde_loss_dict = self.dbde.training_loss(s0, cond) 
-		dbde_loss = dbde_loss_dict["loss"]
+		s0 = self._flatten_tensor(batch.oobs)
+		cond = self._flatten_tensor(dbde_cond)
+		if hasattr(batch, "valid_mask"):
+			mask = batch.valid_mask.reshape(-1).to(dtype=torch.bool, device=s0.device)
+			if mask.sum() == 0:
+				return
+			s0 = s0[mask]
+			cond = cond[mask]
+		if s0.shape[0] == 0:
+			return
+		chunk_size = self.dbde_sample_chunk_size or s0.shape[0]
+		chunk_size = max(1, chunk_size)
+		loss_terms = []
+		effective_samples = 0
+		for start in range(0, s0.shape[0], chunk_size):
+			end = min(start + chunk_size, s0.shape[0])
+			loss_dict = self.dbde.training_loss(s0[start:end], cond[start:end])
+			loss_terms.append(loss_dict["loss"] * (end - start))
+			effective_samples += (end - start)
+		if not loss_terms:
+			return
+		dbde_loss = torch.stack(loss_terms).sum() / effective_samples
 		dbde_loss.backward()
 		self.dbde_optimizer.step()
+		self.record("learn/dbde_loss", dbde_loss.item())
 	def update_critic(self, batch):
 		# cal target_q
 		pre_sz = list(batch.done.shape)
@@ -3306,30 +3373,13 @@ class Q_SACRunner(TD3SACRunner):
 		### actor loss，
 		# TODO：加入q_un的计算
 		q_uncertainty_weight = 1.0
-		if self.diffusion_model:
-			num_dbde_samples = 10
-			dbde_cond = self._build_dbde_cond(batch)
-			# flatten time dimension for diffusion sampling
-			dbde_cond_flat = dbde_cond.reshape(-1, dbde_cond.shape[-1]) if dbde_cond.dim() > 2 else dbde_cond
-			c_in_flat = batch.c_in_online_cur.reshape(-1, batch.c_in_online_cur.shape[-1]) if batch.c_in_online_cur.dim() > 2 else batch.c_in_online_cur
-			flat_size = dbde_cond_flat.shape[0]
-			dbde_output = self.dbde.sample(dbde_cond_flat, num_dbde_samples)  # [B*T*num_samples, obs_dim]
-			if self.cfg.global_cfg.critic_input.history_merge_method != "stack_rnn":
-				obs_dim = self.env.observation_space.shape[0]
-				# 复制 critic 输入，再用 DBDE 生成的 obs 替换 obs 部分，保持动作/历史不变
-				c_in_expanded = c_in_flat.repeat_interleave(num_dbde_samples, dim=0).clone()
-				c_in_expanded[..., :obs_dim] = dbde_output
-				q_dbde, _ = self.critic1(c_in_expanded, None)  # [B*num_dbde_samples, 1]
-				q_dbde = q_dbde.view(flat_size, num_dbde_samples, -1)
-				q_var = q_dbde.var(dim=1, unbiased=False).mean(dim=1, keepdim=True)  # [B*T,1]
-				# reshape back to sequence shape if needed
-				if batch.valid_mask.dim() > 1:
-					q_var = q_var.view(*batch.valid_mask.shape, 1)
-				q_uncertainty_weight = 1.0 / (1.0 + q_var)  # 方差越大，权重越小
-				q_uncertainty_weight = q_uncertainty_weight.detach()
-			else:
-				# RNN critic 情况下暂时无法对 preinput 做替换，先用常数权重
-				q_uncertainty_weight = 1.0
+		if self.diffusion_model and self.cfg.global_cfg.critic_input.history_merge_method != "stack_rnn":
+			num_dbde_samples = max(1, self.dbde_num_samples)
+			if num_dbde_samples > 1:
+				dbde_cond = self._build_dbde_cond(batch)
+				q_uncertainty_weight = self._compute_q_uncertainty_weight(batch, dbde_cond, num_dbde_samples)
+				if isinstance(q_uncertainty_weight, torch.Tensor):
+					self.record("learn/dbde_weight_mean", q_uncertainty_weight.mean().item())
 		if self.cfg.global_cfg.critic_input.history_merge_method == "stack_rnn":
 			if self.cfg.global_cfg.critic_input.bi_or_si_rnn == "both":
 				current_q1a = forward_with_preinput(batch.c_in_online_cur, batch.preinput, self.critic_sirnn_1, "cur")

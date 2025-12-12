@@ -6,3 +6,7 @@ export UOUTDIR=/mlx_devbox/users/tujunqi/playground/delay_bytedance/delay_byteda
 export NUM_WORKERS=0 # number of workers to use
 mkdir -p $UDATADIR $UPRJDIR $UOUTDIR
 LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/mlx_devbox/users/tujunqi/playground/.mujoco/mujoco210/bin
+python src/entry.py \
+	experiment=q_sac \
+	env.name=Ant-v4 \
+	env.delay=4
